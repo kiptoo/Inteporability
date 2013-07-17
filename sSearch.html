@@ -1,0 +1,258 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Untitled Document</title>
+</head>
+
+<body>
+<style type="text/css" media="screen">
+.blue{color:blue;text-decoration:underline;cursor:pointer;}
+
+/* Put your CSS styling here */
+
+</style>
+
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script type="text/javascript">
+	   var theId,id,href,idno,myId,mapId;	
+  var data;
+  var  ChartData={};
+  	function reportTableLoad(idno)
+	{
+	
+		$("#reports").html("");
+		$("#reports").append("<h1>REPORTS</h1>");
+	
+      $.get("../../../api/reportTables.json",function(json) 
+	                    {
+						
+							
+		$(json.reportTables).each(function(i,rept){
+	             	var rep=rept.id;
+				  var rephref=rept.href;
+				  
+				$.get(rephref+'.json', function(rep) {
+					$(rep.reportTable).each(function(i, dat){
+					var repTabhref= dat.href;
+					$.get(repTabhref+'.json', function(tab) {
+						$(tab.indicators).each(function(i, ind){
+						var	indid=ind.id;
+						if(indid==idno){
+							
+					var anchor = $("<iframe></iframe>").attr("src",rephref+'/data.html').attr("height",780).attr("width",780).append("<br />"); 				  
+									 
+                                        
+                                        $("#reports").append(anchor).load();
+						
+						
+						}
+					});
+					});
+					});
+				});
+			
+				
+				 });	  
+		
+				
+		  	 
+		 
+                        });
+	}   
+  	function reportLoad(idno)
+	{
+	
+		$("#reports").html("");
+		$("#reports").append("<h1>REPORTS</h1>");
+	
+      $.get("../../../api/reports.json",function(json) 
+	                    {
+						
+							
+		$(json.reports).each(function(i, data){
+	             	var rep=data.id;
+				  var rephref=data.href;
+				  
+				$.get(rephref+'.json', function(rep) {
+					$(rep.reportTable).each(function(i, dat){
+					var repTabhref= dat.href;
+					$.get(repTabhref+'.json', function(tab) {
+						$(tab.indicators).each(function(i, ind){
+						var	indid=ind.id;
+						if(indid==idno){
+							
+					var anchor = $("<iframe></iframe>").attr("src",rephref+'/data.html').attr("height",780).attr("width",780).append("<br />"); 				  
+									 
+                                        
+                                        $("#reports").append(anchor).load();
+						
+						
+						}
+					});
+					});
+					});
+				});
+			
+				
+				 });	  
+		
+				
+		  	 
+		 
+                        });
+	}   
+
+	function printDetails(idno)
+	{
+		$("#maps").html("");
+		$("#maps").append("<h1>MAPS</h1>");
+		$.get("../../../api/mapViews.json",function(map)
+		{
+			
+			$(map.mapViews).each(function(i, myData)
+			{	
+				
+				$.get("../api/mapViews/"+myData.id+".json",function(mapRef)
+				{
+    					
+					$(mapRef.indicator).each(function(i,mapIndicatorId)
+					{
+						
+						
+						if(idno==mapIndicatorId.id)
+						{
+							//$("#maps").append("<img src='"+mapRef.href+"/data'">);
+							var image=$("<img >").attr("Src",mapRef.href+'/data').append("<br />"); 
+							$("#maps").append(image);
+						}
+						
+					});
+				});
+			});
+		});
+	}
+	
+function chartLoad(idno)
+	{
+		
+		
+		$("#Charts").html("");
+	  	$("#Charts").append("<h1>CHARTS</h1>");
+	//var addr='http://test.hiskenya.org/api/charts/'+idno+'.json';
+	
+      $.get('../../../api/charts/query/'+'.json', function(json) 
+	                    {
+							
+		$(json.charts).each(function(i, data){
+	              var chartid=data.id;
+				  var charthref=data.href;
+				  
+			 $.get(charthref+'.json', function(chart) {
+				 $(chart.indicators).each(function(i, dat){
+					
+					 if(dat.id==idno){
+						
+						
+					   var anchor = $("<img  >").attr("Src",charthref+'/data').append("<br />"); 
+									  
+									 
+                                        
+                                        $("#Charts").append(anchor);
+						
+					 }
+					
+				 });
+				
+				 });	  
+		
+			 });			
+		  	 
+		 
+                        });
+	}   
+
+	function printIt(id)
+	{
+		$("#child").html("");
+		$("#child").append("<h1>INDICATORS</h1>");
+         $("#maps").html("");
+	    $("#Charts").html("");  
+	   	$.get(id+'.json',function(json)
+	   	{ 
+	   	    $(json.indicators).each(function(i, data)
+                                {
+                                	if(data.name==""){$("#child").html("<p style='color:grey;'>no indicators</p>");}
+									  idno=data.id;
+									  //idno=data.href;
+									   var anchor = $("<a id='"+idno+"'  onclick='javascript:chartLoad(id),printDetails(id),reportLoad(id)'></a>").append(data.name).append("<br />"); 
+									  
+									 
+                                        
+                                        $("#child").append(anchor);
+                                });
+	   	});
+	}   
+
+        $(document).ready(function(){
+			 $("#results").append("<h1>INDICATOR GROUPS</h1>");
+                $.get('../../../api/indicatorGroups/query/'+$(this).val()+'.json', function(json)
+                        {
+						     
+                                $(json.indicatorGroups).each(function(i, data)
+                                {
+                                	theId=data.href;
+								       
+									   
+                                        var anchor = $("<p class='blue' id='"+theId+"' onclick='javascript:printIt(id)'></p>").append(data.name);
+                                        
+                                        $("#results").append(anchor);
+										
+                                        
+                                });
+                        });
+                $("#search").keyup(function(){
+	
+                        $("#results").html("");
+						 $("#results").append("<h1>INDICATOR GROUPS</h1>");
+                        $("#child").html("");
+                    $.get('../../../api/indicatorGroups/query/'+$(this).val()+'.json', function(json)
+                        {
+                                $(json.indicatorGroups).each(function(i, data)
+                                {
+									
+                                	theId=data.href;
+								       
+									   
+                                        var anchor = $("<p class='blue' id='"+theId+"' onclick='javascript:printIt(id)'></p>").append(data.name);
+                                        
+                                        $("#results").append(anchor);
+										
+                                        
+                                });
+                        });
+                        
+                });
+                
+                
+        });
+</script>
+
+<h1>Group 3 Search</h1>
+<div style="width:100%;height:200%;">
+<div style="float:left;">
+<label for="search">Search Criteria</label>
+<input type="text" id="search" class="search" />
+
+<div id="results" style="position:absolute;"></div>
+</div>
+
+<div id="child" style="position:absolute; left:50%; cursor:pointer"></div>
+</div>
+<div id="Charts" style="position:relative; margin-top:154px; left:40px;"> </div>
+
+<div id="maps" style="position:relative; margin-top:154px; left:40px;"></div>
+<div id="reports" style="position:relative; margin-top:154px; left:40px;"></div>
+
+</body>
+</html>
