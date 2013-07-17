@@ -23,12 +23,11 @@
     IndArray = [];
     MapArray =[];
    notused =[];
- deferred =    $(document).ready(function(){
-			 $("#results").append("<h1>USED </h1>");
-			 $("#child").append("<h1>NOT USED</h1>");
-			$("#maps").append("<h1>MAPS</h1>");
-			  // Charts();
-			   Maps();	
+   var chart;
+ deferred =$(document).ready(function(){
+	
+			 
+			  // Maps();	
       $.get('../api/indicators/query/'+'.json', function(json)
                         {
 						     
@@ -48,23 +47,17 @@
       	 
              
         });
-		  deferred.ajaxStop(function () {
-				      /*  alert("map"+MapArray.valueOf()); 	
-						alert("ind"+IndArray.valueOf()); 
-						alert("notused"+notused.valueOf());	*/
-						parcentnot=((notused.length/IndArray.length)*100); 
-						parcentused=((MapArray.length/IndArray.length)*100); 
-						$.each(notused,function( intIndex, objValue ){	
-					var anchor = $("<p class='blue' ></p>").append(objValue);
-                                        
-                                        $("#child").append(anchor);		
-											
-						});
-						 $("#child").append("Pacentage not used=>"+parcentnot);	
-						 $("#results").append("Pacentage Used=>"+parcentused);	
-				   });
+	
+		
 	function Maps()
 	{
+		notused=[];
+				  MapArray =[];
+		 $("#results").html("");
+		 $("#child").html("");
+		 		 $("#results").append("<h1>MAPS</h1>");
+			  $("#results").append("<h2>USED </h2>");
+			 $("#child").append("<h2>NOT USED</h2>");
 				         $.get('../api/mapViews'+'.json', function(json)
                         {
 					
@@ -73,6 +66,7 @@
 	              var chartid=data.id;
 				  var charthref=data.href;
 				  var parcent=0;
+				  
 			 $.get("../api/mapViews/"+data.id+".json", function(map) {
 				 
 				 $(map.indicator).each(function(i, d){
@@ -102,11 +96,34 @@
 		});
                       
                         });
-								
+						$(document).ajaxStop(function() {
+                     /*  alert("map"+MapArray.valueOf()); 	
+						alert("ind"+IndArray.valueOf()); 
+						alert("notused"+notused.valueOf());	*/
+						parcentnot=((notused.length/IndArray.length)*100); 
+						parcentused=(( MapArray.length/IndArray.length)*100); 
+						$.each(notused,function( intIndex, objValue ){	
+					var anchor = $("<p class='blue' ></p>").append(objValue);
+                                        
+                                        $("#child").append(anchor);		
+											
+						});
+						 $("#child").append("Pacentage not used=>"+parcentnot);	
+						 $("#results").append("Pacentage Used=>"+parcentused);	 
+                });				
 	}   
-	function Charts()
-	{
-				         $.get('../api/charts/query/'+'.json', function(json)
+function Charts()
+	{ 
+	chartArray = [];
+	
+				  notused=[];
+		 $("#results").html("");
+		 $("#child").html("");
+		 		 $("#results").append("<h1>CHARTS</h1>");
+			  $("#results").append("<h2>USED </h2>");
+			 $("#child").append("<h2>NOT USED</h2>");
+		
+			kip=  $.get('../api/charts/query/'+'.json', function(json)
                         {
 					
 						     							
@@ -126,19 +143,30 @@
 					}
 					
 					
-					var notused = $(IndArray).not(chartArray).get();
-					$.each($(chartArray).not(IndArray).get(),function( intIndex, objValue ){
-							var anchor = $("<p class='blue' ></p>").append(objValue);
-                                        
-                                        $("#child").append(anchor);		
-                        });
-					
+					 notused = $(IndArray).not(chartArray).get();
+			
 				 });
 				 
 					
 			 });
 		});
 					    });
+				$(document).ajaxStop(function() {
+                     /*  alert("map"+MapArray.valueOf()); 	
+						alert("ind"+IndArray.valueOf()); 
+						alert("notused"+notused.valueOf());	*/
+						parcentnot=((notused.length/IndArray.length)*100); 
+						parcentused=(( chartArray .length/IndArray.length)*100); 
+						$.each(notused,function( intIndex, objValue ){	
+					var anchor = $("<p class='blue' ></p>").append(objValue);
+                                        
+                                        $("#child").append(anchor);		
+											
+						});
+						 $("#child").append("Pacentage not used=>"+parcentnot);	
+						 $("#results").append("Pacentage Used=>"+parcentused);	 
+                });		
+		
 						
 	}   
 
@@ -146,16 +174,19 @@
 
 <h1>Group 3 Search</h1>
 <div style="width:100%;height:200%;">
+<ul>
+ <li><a href="#" onclick="javascript:Charts();">CHARTS</a></li>
+ <li><a href="#" onclick="javascript:Maps();" >MAPS</li>
+ <li>REPORTS</li>
+</ul>
 <div style="float:left;">
 
 <div id="results" style="position:absolute;"></div>
+
 </div>
 
 <div id="child" style="position:absolute; left:50%; cursor:pointer"></div>
-</div>
-<div id="Charts" style="position:relative; margin-top:154px; left:40px;"> </div>
 
-<div id="maps" style="position:relative; margin-top:154px; left:40px;"></div>
-<div id="reports" style="position:relative; margin-top:154px; left:40px;"></div>
+
 </body>
 </html>
