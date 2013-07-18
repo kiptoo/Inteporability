@@ -26,7 +26,8 @@
     var chart;
     deferred =$(document).ready(function(){
 
-        Charts();
+        kip =new Charts();
+        kip.
         Maps();
         $.get('../api/indicators/query/'+'.json', function(json)
         {
@@ -168,17 +169,17 @@
 <h1>ANALYSIS</h1>
 
     <table>
-        <tr id="maps" >
+        <tr >
 
               <td id="results"></td>
             <td  id="child" style="position:relative; left:50%  "></td>
         </tr>
-        <tr id="charts">
+      <!--  <tr id="charts">
 
            <td id="chartsused"></td>
             <td id="chartnot"></td>
         </tr>
-        <tr>
+        <tr>  -->
 
         </tr>
     </table>
