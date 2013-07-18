@@ -30,9 +30,9 @@
 							
 		$(json.reportTables).each(function(i,rept){
 	             	var rep=rept.id;
-				  var rephref=rept.href;
+				  var REPHREF=rept.href;
 				  
-				$.get(rephref+'.json', function(rep) {
+				$.get(REPHREF+'.json', function(rep) {
 					$(rep.reportTable).each(function(i, dat){
 					var repTabhref= dat.href;
 					$.get(repTabhref+'.json', function(tab) {
@@ -40,7 +40,7 @@
 						var	indid=ind.id;
 						if(indid==idno){
 							
-					var anchor = $("<iframe></iframe>").attr("src",rephref+'/data.html').attr("height",780).attr("width",780).append("<br />"); 				  
+					var anchor = $("<iframe></iframe>").attr("src",REPHREF+'/data.html').attr("height",780).attr("width",780).append("<br />");
 									 
                                         
                                         $("#reports").append(anchor).load();
@@ -72,9 +72,9 @@
 							
 		$(json.reports).each(function(i, data){
 	             	var rep=data.id;
-				  var rephref=data.href;
+				  var REPHREF=data.href;
 				  
-				$.get(rephref+'.json', function(rep) {
+				$.get(REPHREF+'.json', function(rep) {
 					$(rep.reportTable).each(function(i, dat){
 					var repTabhref= dat.href;
 					$.get(repTabhref+'.json', function(tab) {
@@ -82,7 +82,7 @@
 						var	indid=ind.id;
 						if(indid==idno){
 							
-					var anchor = $("<iframe></iframe>").attr("src",rephref+'/data.html').attr("height",780).attr("width",780).append("<br />"); 				  
+					var anchor = $("<iframe></iframe>").attr("src",REPHREF+'/data.html').attr("height",780).attr("width",780).append("<br />");
 									 
                                         
                                         $("#reports").append(anchor).load();
