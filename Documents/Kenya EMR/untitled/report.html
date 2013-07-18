@@ -1,0 +1,192 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Untitled Document</title>
+</head>
+
+<body>
+<style type="text/css" media="screen">
+    .blue{color:blue;text-decoration:underline;cursor:pointer;}
+
+        /* Put your CSS styling here */
+
+</style>
+
+<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script type="text/javascript">
+    var theId,id,href,idno,myId,mapId;
+    var data;
+    var k=0;
+    var indic=0;
+    chartArray = [];
+    IndArray = [];
+    MapArray =[];
+    notused =[];
+    var chart;
+    deferred =$(document).ready(function(){
+
+        Charts();
+        Maps();
+        $.get('../api/indicators/query/'+'.json', function(json)
+        {
+
+            $(json.indicators).each(function(i, data)
+            {
+                indic=indic+1;
+                var indid=data.id;
+                var indname=data.name;
+                theId=data.href;
+                IndArray.push(data.name);
+
+
+
+            });
+
+        });
+
+
+    });
+
+
+    function Maps()
+    {
+        notused=[];
+        MapArray =[];
+
+        $("#maps").append("<h1>MAPS</h1>");
+        $("#results").append("<h2>USED </h2>");
+        $("#child").append("<h2>NOT USED</h2>");
+        $.get('../api/mapViews'+'.json', function(json)
+        {
+
+
+            $(json.mapViews).each(function(i, data){
+                var chartid=data.id;
+                var charthref=data.href;
+                var parcent=0;
+
+                $.get("../api/mapViews/"+data.id+".json", function(map) {
+
+                    $(map.indicator).each(function(i, d){
+
+                        if($.inArray(d.name, MapArray)==-1){
+
+                            MapArray.push(d.name);
+
+                            var anchor = $("<p class='blue' ></p>").append(d.name);
+
+                            $("#results").append(anchor);
+                            notused = $(IndArray).not(MapArray).get();
+
+                        }
+
+
+
+
+
+                    });
+
+
+                });
+
+
+
+            });
+
+        });
+        $(document).ajaxStop(function() {
+            /*  alert("map"+MapArray.valueOf());
+             alert("ind"+IndArray.valueOf());
+             alert("notused"+notused.valueOf());	*/
+            parcentnot=((notused.length/IndArray.length)*100);
+            parcentused=(( MapArray.length/IndArray.length)*100);
+            $.each(notused,function( intIndex, objValue ){
+                var anchor = $("<p class='blue' ></p>").append(objValue);
+
+                $("#child").append(anchor);
+
+            });
+            $("#child").append("Pacentage not used=>"+parcentnot);
+            $("#results").append("Pacentage Used=>"+parcentused);
+        });
+    }
+    function Charts()
+    {
+        chartArray = [];
+
+        notused=[];
+
+        $("#charts").append("<h1>CHARTS</h1>");
+        $("#chartsused").append("<h2>USED </h2>");
+        $("#chartnot").append("<h2>NOT USED</h2>");
+
+        kip=  $.get('../api/charts/query/'+'.json', function(json)
+        {
+
+
+            $(json.charts).each(function(i, data){
+                var chartid=data.id;
+                var charthref=data.href;
+
+                $.get(charthref+'.json', function(chart) {
+                    $(chart.indicators).each(function(i, dat){
+
+                        if($.inArray(dat.name,chartArray)==-1){
+                            chartArray.push(dat.name);
+                            var anchor = $("<p class='blue' ></p>").append(dat.name);
+
+                            $("#results").append(anchor);
+
+                        }
+
+
+                        notused = $(IndArray).not(chartArray).get();
+
+                    });
+
+
+                });
+            });
+        });
+        $(document).ajaxStop(function() {
+            /*  alert("map"+MapArray.valueOf());
+             alert("ind"+IndArray.valueOf());
+             alert("notused"+notused.valueOf());	*/
+            parcentnot=((notused.length/IndArray.length)*100);
+            parcentused=(( chartArray .length/IndArray.length)*100);
+            $.each(notused,function( intIndex, objValue ){
+                var anchor = $("<p class='blue' ></p>").append(objValue);
+
+                $("#child").append(anchor);
+
+            });
+            $(" #child").append("Pacentage not used=>"+parcentnot);
+            $(" #results").append("Pacentage Used=>"+parcentused);
+        });
+
+
+    }
+
+</script>
+
+<h1>ANALYSIS</h1>
+
+    <table>
+        <tr id="maps" >
+
+              <td id="results"></td>
+            <td  id="child" style="position:relative; left:50%  "></td>
+        </tr>
+        <tr id="charts">
+
+           <td id="chartsused"></td>
+            <td id="chartnot"></td>
+        </tr>
+        <tr>
+
+        </tr>
+    </table>
+
+</body>
+</html>
