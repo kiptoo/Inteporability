@@ -1,0 +1,17 @@
+{
+    "version": "1.0",
+    "name": "Group 3 kip edition",
+    "description": "On clicking and indicator,it shows charts,maps,table",
+    "launch_path": "sSearch.html",
+    "icons": {},
+    "developer": {
+        "name": "Group 3",
+        "url": "http://github.com/kiptoo/search"
+    },
+    "default_locale": "en",
+    "activities": {
+        "dhis": {
+            "href": "*"
+        }
+    }
+}
