@@ -29,9 +29,9 @@ public class StaXParser
     static final String INTERACTIVE = "interactive";
 
     @SuppressWarnings( { "unchecked", "null" } )
-    public List<SyncDataElementGroup> readConfig( InputStream in )
+    public List<SyncDataSet> readConfig( InputStream in )
     {
-        List<SyncDataElementGroup> items = new ArrayList<SyncDataElementGroup>();
+        List<SyncDataSet> items = new ArrayList<SyncDataSet>();
         try
         {
             // First create a new XMLInputFactory
@@ -40,7 +40,7 @@ public class StaXParser
             //      InputStream in = new FileInputStream(configFile);
             XMLEventReader eventReader = inputFactory.createXMLEventReader( in );
             // Read the XML document
-            SyncDataElementGroup item = null;
+            SyncDataSet item = null;
 
             while ( eventReader.hasNext() )
             {
@@ -50,10 +50,10 @@ public class StaXParser
                 {
                     StartElement startElement = event.asStartElement();
                     // If we have a item element we create a new item
-                    if ( startElement.getName().getLocalPart() == ("dataElementGroup") )
+                    if ( startElement.getName().getLocalPart() == ("dataSet") )
                     {
                         //            System.out.println("reaeched here1");
-                        item = new SyncDataElementGroup();
+                        item = new SyncDataSet();
                         // We read the attributes from this tag and add the date
                         // attribute to our object
                         Iterator<Attribute> attributes = startElement.getAttributes();
@@ -86,7 +86,7 @@ public class StaXParser
                 if ( event.isEndElement() )
                 {
                     EndElement endElement = event.asEndElement();
-                    if ( endElement.getName().getLocalPart() == ("dataElementGroup") )
+                    if ( endElement.getName().getLocalPart() == ("dataSet") )
                     {
                         items.add( item );
                     }
@@ -102,7 +102,7 @@ public class StaXParser
     }
 
     @SuppressWarnings( { "unchecked", "null" } )
-    public List<SyncDataElement> readDe( String html )
+    public List<SyncDataElement> readDe(InputStream html )
     {
         List<SyncDataElement> items = new ArrayList<SyncDataElement>();
         try
@@ -110,10 +110,9 @@ public class StaXParser
             // First create a new XMLInputFactory
             XMLInputFactory inputFactory = XMLInputFactory.newInstance();
             // Setup a new eventReader
-            InputStream stream = new ByteArrayInputStream( html.getBytes( "UTF-8" ) );
+            XMLEventReader eventReader = inputFactory.createXMLEventReader(html);
 
             //      InputStream in = new FileInputStream(configFile);
-            XMLEventReader eventReader = inputFactory.createXMLEventReader( stream );
             // Read the XML document
             SyncDataElement item = null;
 
@@ -171,10 +170,6 @@ public class StaXParser
             }
         }
         catch ( XMLStreamException e )
-        {
-            e.printStackTrace();
-        }
-        catch ( UnsupportedEncodingException e )
         {
             e.printStackTrace();
         }

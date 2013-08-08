@@ -42,7 +42,8 @@ public class HttpClientExample
     private static StringWriter readF() {
         String filename;
         StringWriter xmlReport = new StringWriter();
-        filename= "C:\\Users\\kip\\Desktop\\new.xml";
+
+                filename= "C:\\Users\\kip\\Documents\\Kenya EMR\\SpringMVCApp\\test.xml";
         File file = new File(filename);
         System.out.println(filename);
         try
@@ -61,7 +62,7 @@ public class HttpClientExample
         return xmlReport;
     }
     // HTTP GET request
-    public void sendGet(String username,String password,String url)
+    public String sendGet(String username,String password,String url)
         throws Exception
     {
 
@@ -96,17 +97,25 @@ public class HttpClientExample
 
         System.out.println( result.toString() );
 
+        return result.toString();
     }
 
     // HTTP POST request
-    public void sendPost()
+    public String sendPost()
         throws Exception
     {
 
 
        URL url =new URL( "http://localhost:8090/dhis/api/dataValueSets");
         StringWriter poster=readF();
-
+     /*   int kip=69;
+       String poster="<dataValueSet xmlns=\"http://dhis2.org/schema/dxf/2.0\" dataSet=\"UpS2bTVcClZ\"  completeDate=\"20130723\" period=\"201301\" orgUnit=\"xneQLS3T8fN\">\n" +
+               "  <dataValue dataElement=\"OPII6vOKimx\" value=\""+kip+"\" />\n" +
+               "  <dataValue dataElement=\"ND0kGuYLszx\" value=\"50\"/>\n" +
+               "  <dataValue dataElement=\"MKICatwGRPz\" value=\"60\"/>\n" +
+               "  <dataValue dataElement=\"f1yrtCEf1HP\" value=\"70\"/>\n" +
+               "\n" +
+               "</dataValueSet>";     */
         HttpPost post = new HttpPost(url.getPath());
 
         // add header
@@ -124,6 +133,7 @@ public class HttpClientExample
         post.addHeader( "Content-Type", "application/xml" );
         post.addHeader( "Accept", "application/xml" );
 
+      //  post.setEntity( new StringEntity(poster) );
         post.setEntity( new StringEntity(poster.toString() ) );
         HttpResponse response = httpclient.execute(targetHost, post, localcontext );
         HttpEntity entity = response.getEntity();
@@ -144,6 +154,7 @@ public class HttpClientExample
 
         System.out.println( result.toString() );
 
+        return result.toString();
     }
 
 }

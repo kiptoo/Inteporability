@@ -20,19 +20,31 @@ package com.springapp.mvc.syncmodel;
  *
  **/
 
+import javax.persistence.*;
+@Entity(name = "dataset")
 public class SyncDataSet
 
 {
+    @Id
     protected String id;
-
+    @Basic
     protected String code;
-
+    @Basic
     protected String uid;
-
+    @Basic
     protected String name;
-
+    @Basic
     protected String href;
+    @Basic
+    protected String period;
 
+    public String getPeriod() {
+        return period;
+    }
+
+    public void setPeriod(String period) {
+        this.period = period;
+    }
     public String getCode()
     {
         return code;
@@ -89,7 +101,7 @@ public class SyncDataSet
         {
             return false;
         }
-        if ( (this.uid == null) ? (other.uid != null) : !this.uid.equals( other.uid ) )
+        if ( (this.uid == null) ? (other.uid!= null) : !this.uid.equals( other.uid ) )
         {
             return false;
         }

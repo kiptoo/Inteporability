@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.*;
 @XmlAccessorType( XmlAccessType.FIELD )
 @XmlType( name = "" )
 @XmlRootElement( name = "dataValue" )
-public class datavalue
+public class dataValue
 {
 
     @XmlAttribute( required = true )
@@ -36,17 +36,17 @@ public class datavalue
     @XmlAttribute( required = true )
     protected String value;
 
-    public datavalue()
+    public dataValue()
     {
     }
 
-    public datavalue( String dataElement, String value )
+    public dataValue(String dataElement, String value)
     {
         this.dataElement = dataElement;
         this.value = value;
     }
 
-    public datavalue( String dataElement, String categoryOptionCombo, String value )
+    public dataValue(String dataElement, String categoryOptionCombo, String value)
     {
         this.dataElement = dataElement;
         this.categoryOptionCombo = categoryOptionCombo;

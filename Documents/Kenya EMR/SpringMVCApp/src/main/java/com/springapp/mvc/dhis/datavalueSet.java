@@ -22,7 +22,7 @@ import java.util.List;
 @XmlAccessorType( XmlAccessType.FIELD )
 @XmlType( name = "", propOrder = { "dataValue" } )
 @XmlRootElement( name = "dataValueSet" )
-public class datavalueSet
+public class dataValueSet
 {
     public static final String XSLT2SDMX = "";
 
@@ -33,7 +33,7 @@ public class datavalueSet
     };
 
     @XmlElement( required = true )
-    protected List<datavalue> dataValue = new LinkedList<datavalue>();
+    protected List<com.springapp.mvc.dhis.dataValue> dataValue = new LinkedList<com.springapp.mvc.dhis.dataValue>();
 
     @XmlAttribute
     @XmlSchemaType( name = "date" )
@@ -62,15 +62,15 @@ public class datavalueSet
      *
      *
      * <p> Objects of the following type(s) are allowed in the list
-     * {@link datavalue }
+     * {@link com.springapp.mvc.dhis.dataValue }
      *
      *
      */
-    public List<datavalue> getDataValues()
+    public List<com.springapp.mvc.dhis.dataValue> getDataValues()
     {
         if ( dataValue == null )
         {
-            dataValue = new ArrayList<datavalue>();
+            dataValue = new ArrayList<com.springapp.mvc.dhis.dataValue>();
         }
         return this.dataValue;
     }
